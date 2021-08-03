@@ -299,7 +299,7 @@
 			},
 			"datalakeAccountName": {
 				"type": "string",
-				"defaultValue": " thays3wnpwh332p4poc"
+				"defaultValue": "thays3wnpwh332p4poc"
 			}
 		},
 		"folder": {

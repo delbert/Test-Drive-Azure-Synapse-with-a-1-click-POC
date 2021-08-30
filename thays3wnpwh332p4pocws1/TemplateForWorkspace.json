@@ -353,7 +353,6 @@
 				"[concat(variables('workspaceId'), '/datasets/faresDataSource')]",
 				"[concat(variables('workspaceId'), '/datasets/faresDataSink')]",
 				"[concat(variables('workspaceId'), '/dataflows/tripFaresDataTransformations')]",
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('workspaceId'), '/datasets/azureSynapseAnalyticsSchema')]"
 			]
 		},
@@ -970,6 +969,66 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/AggregateTaxiData')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [payment_type]\n,[average_fare]\n,[total_trip_distance]\n FROM [tripFares].[AggregateTaxiData]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "thays3wnpwh332p4pocws1p1",
+						"poolName": "thays3wnpwh332p4pocws1p1"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/loadFare')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.objects O JOIN sys.schemas S ON O.schema_id = S.schema_id WHERE O.NAME = 'fare' AND O.TYPE = 'U' AND S.NAME = 'nyc')\nCREATE TABLE nyc.fare\n\t(\n\t [medallion] nvarchar(4000),\n\t [hack_license] nvarchar(4000),\n\t [vendor_id] nvarchar(4000),\n\t [pickup_datetime] datetime2(0),\n\t [payment_type] nvarchar(4000),\n\t [fare_amount] float,\n\t [surcharge] bigint,\n\t [mta_tax] float,\n\t [tip_amount] float,\n\t [tolls_amount] float,\n\t [total_amount] float\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n--Uncomment the 4 lines below to create a stored procedure for data pipeline orchestration​\n--CREATE PROC bulk_load_fare\n--AS\n--BEGIN\nCOPY INTO nyc.fare\n(medallion 1, hack_license 2, vendor_id 3, pickup_datetime 4, payment_type 5, fare_amount 6, surcharge 7, mta_tax 8, tip_amount 9, tolls_amount 10, total_amount 11)\nFROM 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/fares-data.csv'\nWITH\n(\n\tFILE_TYPE = 'CSV'\n\t,MAXERRORS = 13\n\t,FIRSTROW = 2\n\t,ERRORFILE = 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/'\n)\n--END\nGO\n\nSELECT TOP 100 * FROM nyc.fare\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "thays3wnpwh332p4pocws1p1",
+						"poolName": "thays3wnpwh332p4pocws1p1"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/loadTrip')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.objects O JOIN sys.schemas S ON O.schema_id = S.schema_id WHERE O.NAME = 'trip' AND O.TYPE = 'U' AND S.NAME = 'nyc')\nCREATE TABLE nyc.trip\n\t(\n\t [medallion] nvarchar(4000),\n\t [hack_license] nvarchar(4000),\n\t [vendor_id] nvarchar(4000),\n\t [rate_code] bigint,\n\t [store_and_fwd_flag] nvarchar(4000),\n\t [pickup_datetime] datetime2(0),\n\t [dropoff_datetime] datetime2(0),\n\t [passenger_count] bigint,\n\t [trip_time_in_secs] bigint,\n\t [trip_distance] float,\n\t [pickup_longitude] float,\n\t [pickup_latitude] float,\n\t [dropoff_longitude] float,\n\t [dropoff_latitude] float\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n--Uncomment the 4 lines below to create a stored procedure for data pipeline orchestration​\n--CREATE PROC bulk_load_trip\n--AS\n--BEGIN\nCOPY INTO nyc.trip\n(medallion 1, hack_license 2, vendor_id 3, rate_code 4, store_and_fwd_flag 5, pickup_datetime 6, dropoff_datetime 7, passenger_count 8, trip_time_in_secs 9, trip_distance 10, pickup_longitude 11, pickup_latitude 12, dropoff_longitude 13, dropoff_latitude 14)\nFROM 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/trip-data.csv'\nWITH\n(\n\tFILE_TYPE = 'CSV'\n\t,MAXERRORS = 13\n\t,FIRSTROW = 2\n\t,ERRORFILE = 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/'\n)\n--END\nGO\n\nSELECT TOP 100 * FROM nyc.trip\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "thays3wnpwh332p4pocws1p1",
+						"poolName": "thays3wnpwh332p4pocws1p1"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Data Exploration and ML Modeling - NYC taxi predict using Spark MLlib')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -1013,15 +1072,12 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 5,
 						"cores": 8,
-						"memory": 56,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 56
+					}
 				},
 				"cells": [
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"# Predict NYC Taxi Tips using Spark ML and Azure Open Datasets\n",
 							"\n",
@@ -1034,7 +1090,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import matplotlib.pyplot as plt\n",
 							"\n",
@@ -1057,7 +1112,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Ingest Data¶ \n",
 							"\n",
@@ -1066,7 +1120,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"# Import NYC yellow cab data from Azure Open Datasets\n",
 							"from azureml.opendatasets import NycTlcYellow\n",
@@ -1085,7 +1138,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"#To make development easier, faster and less expensive downsample for now\n",
 							"sampled_taxi_df = nyc_tlc_df.sample(True, 0.001, seed=1234)"
@@ -1095,7 +1147,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Exploratory Data Analysis\n",
 							"\n",
@@ -1104,7 +1155,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"#The charting package needs a Pandas dataframe or numpy array do the conversion\n",
 							"sampled_taxi_pd_df = sampled_taxi_df.toPandas()\n",
@@ -1139,7 +1189,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Data Prep and Featurization\n",
 							"\n",
@@ -1151,7 +1200,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"taxi_df = sampled_taxi_df.select('totalAmount', 'fareAmount', 'tipAmount', 'paymentType', 'rateCodeId', 'passengerCount'\\\n",
 							"                                , 'tripDistance', 'tpepPickupDateTime', 'tpepDropoffDateTime'\\\n",
@@ -1174,7 +1222,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Data Prep and Featurization Part 2\n",
 							"\n",
@@ -1186,7 +1233,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"taxi_featurised_df = taxi_df.select('totalAmount', 'fareAmount', 'tipAmount', 'paymentType', 'passengerCount'\\\n",
 							"                                                , 'tripDistance', 'weekdayString', 'pickupHour','tripTimeSecs','tipped'\\\n",
@@ -1203,7 +1249,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Encoding\n",
 							"\n",
@@ -1217,7 +1262,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"# The sample uses an algorithm that only works with numeric features convert them so they can be consumed\n",
 							"sI1 = StringIndexer(inputCol=\"trafficTimeBins\", outputCol=\"trafficTimeBinsIndex\"); \n",
@@ -1233,7 +1277,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Generation of Testing and Training Data Sets\n",
 							"Simple split, 70% for training and 30% for testing the model. Playing with this ratio may result in different models.\n",
@@ -1242,7 +1285,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"# Decide on the split between training and testing data from the dataframe \n",
 							"trainingFraction = 0.7\n",
@@ -1257,7 +1299,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Train the Model\n",
 							"\n",
@@ -1266,7 +1307,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"## Create a new LR object for the model\n",
 							"logReg = LogisticRegression(maxIter=10, regParam=0.3, labelCol = 'tipped')\n",
@@ -1294,7 +1334,6 @@
 					},
 					{
 						"cell_type": "markdown",
-						"metadata": {},
 						"source": [
 							"## Evaluate and Visualize\n",
 							"\n",
@@ -1304,7 +1343,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"## Plot the ROC curve, no need for pandas as this uses the modelSummary object\n",
 							"modelSummary = lrModel.stages[-1].summary\n",

@@ -2,7 +2,7 @@
 	"name": "queries",
 	"properties": {
 		"content": {
-			"query": "select count (*) from nyc.fare;\n\n--select count(*) from nyc.trip;",
+			"query": "--select count (*) from nyc.fare;\n\nselect count(*) from nyc.trip;",
 			"metadata": {
 				"language": "sql"
 			},

@@ -1,0 +1,17 @@
+{
+	"name": "AggregateTaxiData",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [payment_type]\n,[average_fare]\n,[total_trip_distance]\n FROM [tripFares].[AggregateTaxiData]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "thays3wnpwh332p4pocws1p1",
+				"poolName": "thays3wnpwh332p4pocws1p1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

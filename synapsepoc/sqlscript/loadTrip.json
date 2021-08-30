@@ -1,0 +1,17 @@
+{
+	"name": "loadTrip",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.objects O JOIN sys.schemas S ON O.schema_id = S.schema_id WHERE O.NAME = 'trip' AND O.TYPE = 'U' AND S.NAME = 'nyc')\nCREATE TABLE nyc.trip\n\t(\n\t [medallion] nvarchar(4000),\n\t [hack_license] nvarchar(4000),\n\t [vendor_id] nvarchar(4000),\n\t [rate_code] bigint,\n\t [store_and_fwd_flag] nvarchar(4000),\n\t [pickup_datetime] datetime2(0),\n\t [dropoff_datetime] datetime2(0),\n\t [passenger_count] bigint,\n\t [trip_time_in_secs] bigint,\n\t [trip_distance] float,\n\t [pickup_longitude] float,\n\t [pickup_latitude] float,\n\t [dropoff_longitude] float,\n\t [dropoff_latitude] float\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n--Uncomment the 4 lines below to create a stored procedure for data pipeline orchestration​\n--CREATE PROC bulk_load_trip\n--AS\n--BEGIN\nCOPY INTO nyc.trip\n(medallion 1, hack_license 2, vendor_id 3, rate_code 4, store_and_fwd_flag 5, pickup_datetime 6, dropoff_datetime 7, passenger_count 8, trip_time_in_secs 9, trip_distance 10, pickup_longitude 11, pickup_latitude 12, dropoff_longitude 13, dropoff_latitude 14)\nFROM 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/trip-data.csv'\nWITH\n(\n\tFILE_TYPE = 'CSV'\n\t,MAXERRORS = 13\n\t,FIRSTROW = 2\n\t,ERRORFILE = 'https://thays3wnpwh332p4poc.dfs.core.windows.net/public/'\n)\n--END\nGO\n\nSELECT TOP 100 * FROM nyc.trip\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "thays3wnpwh332p4pocws1p1",
+				"poolName": "thays3wnpwh332p4pocws1p1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

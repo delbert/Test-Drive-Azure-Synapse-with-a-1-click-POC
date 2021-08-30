@@ -1,0 +1,17 @@
+{
+	"name": "queries",
+	"properties": {
+		"content": {
+			"query": "select count (*) from nyc.fare;\n\n--select count(*) from nyc.trip;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "thays3wnpwh332p4pocws1p1",
+				"poolName": "thays3wnpwh332p4pocws1p1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

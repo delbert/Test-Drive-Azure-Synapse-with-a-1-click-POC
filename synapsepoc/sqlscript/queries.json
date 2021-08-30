@@ -2,7 +2,7 @@
 	"name": "queries",
 	"properties": {
 		"content": {
-			"query": "--select count (*) from nyc.fare;\n\nselect count(*) from nyc.trip;",
+			"query": "--select count (*) from nyc.fare;\n\n--select count(*) from nyc.trip;\n\n--select * from sys.dm_pdw_exec_requests where status = 'Completed' option (label = 'monitor');\n\nselect * from sys.dm_pdw_exec_requests r where r.[label] = 'monitor';",
 			"metadata": {
 				"language": "sql"
 			},

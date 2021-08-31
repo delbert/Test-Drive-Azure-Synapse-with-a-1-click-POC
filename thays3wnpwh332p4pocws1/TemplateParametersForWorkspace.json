@@ -5,17 +5,20 @@
 		"workspaceName": {
 			"value": "thays3wnpwh332p4pocws1"
 		},
-		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
-			"value": ""
-		},
 		"DatabaseLinkedService_accountKey": {
 			"value": ""
 		},
 		"StretchesLinkedService_accountKey": {
 			"value": ""
 		},
+		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
+			"value": ""
+		},
 		"sinkLink_accountKey": {
 			"value": ""
+		},
+		"DatabaseLinkedService_properties_typeProperties_url": {
+			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
 		},
 		"HttpServerTripDataLinkedService_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/Azure/Test-Drive-Azure-Synapse-with-a-1-click-POC/main/tripDataAndFaresCSV/trip-data.csv"
@@ -23,17 +26,14 @@
 		"HttpServerTripFareDataLinkedService_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/Azure/Test-Drive-Azure-Synapse-with-a-1-click-POC/main/tripDataAndFaresCSV/fares-data.csv"
 		},
+		"StretchesLinkedService_properties_typeProperties_url": {
+			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
+		},
 		"TripFaresDataLakeStorageLinkedService_properties_typeProperties_url": {
 			"value": "@{concat('https://',linkedService().datalakeAccountName,'.dfs.core.windows.net')}"
 		},
 		"keyVaultLinkedservice_properties_typeProperties_baseUrl": {
 			"value": "@{concat('https://',linkedService().keyVaultName,'.vault.azure.net/')}"
-		},
-		"DatabaseLinkedService_properties_typeProperties_url": {
-			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
-		},
-		"StretchesLinkedService_properties_typeProperties_url": {
-			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
 		},
 		"sinkLink_properties_typeProperties_url": {
 			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"

@@ -1,0 +1,27 @@
+{
+	"name": "StretchDataFlow",
+	"properties": {
+		"folder": {
+			"name": "tank-data"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "DatabaseLinkedService",
+						"type": "LinkedServiceReference"
+					},
+					"name": "database"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "narrowColumns"
+				}
+			],
+			"script": "source(output(\n\t\t{Material Cert} as string,\n\t\t{Cert #/SO#/Contract#} as string,\n\t\tCertReceived as date 'dd/MM/yyyy',\n\t\t{PO #} as integer '000',\n\t\tSULPHUR as float '##0.##',\n\t\t{Heat/Melt #-Code#} as string,\n\t\t{Test/IC #} as string,\n\t\t{Head ID/Plate ID} as string,\n\t\t{PN Code} as string,\n\t\tPN as integer '000',\n\t\t{Chart ID} as string,\n\t\t{Actual Thickness} as float '##0.##',\n\t\tMatlReceivedDate as date 'MM/dd/yyyy',\n\t\tInspector as string,\n\t\t{S/N} as string,\n\t\t{NB#} as integer '000',\n\t\tComments as string,\n\t\t{Hd or Plate} as string,\n\t\t{Material/Grade} as string,\n\t\tThk as float '##0.##',\n\t\t{Plate Producer} as string,\n\t\t{Plate Condition from Plate Vendor} as string,\n\t\t{Head Producer} as string,\n\t\t{Head Forming(H/C)} as string,\n\t\t{Heat Treatment} as string,\n\t\t{Comply to UCS-79(D), UG-81/SEC VIII,DIV.1} as boolean,\n\t\t{Hd Ht#=Plt Ht#} as boolean,\n\t\t{Yield Ok} as boolean,\n\t\t{Tensile Ok} as boolean,\n\t\tDateCertOKed as string,\n\t\t{Chemical  Ok} as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'database',\n\tfileName: 'DatabaseData.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> database\ndatabase select(mapColumn(\n\t\tLink = {Material Cert},\n\t\t{Cert No} = {Cert #/SO#/Contract#},\n\t\t{Heat#} = {Heat/Melt #-Code#},\n\t\t{NB#},\n\t\t{Plate Producer}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> narrowColumns"
+		}
+	}
+}

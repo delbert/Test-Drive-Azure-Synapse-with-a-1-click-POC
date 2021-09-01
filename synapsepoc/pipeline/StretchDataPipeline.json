@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "StretchDataFlow_clone",
+						"referenceName": "StretchDataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {

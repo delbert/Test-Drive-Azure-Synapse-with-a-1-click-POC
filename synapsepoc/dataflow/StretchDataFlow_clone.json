@@ -1,0 +1,62 @@
+{
+	"name": "StretchDataFlow_clone",
+	"properties": {
+		"folder": {
+			"name": "tank-data"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "DatabaseLinkedService",
+						"type": "LinkedServiceReference"
+					},
+					"name": "database"
+				},
+				{
+					"linkedService": {
+						"referenceName": "StretchesLinkedService",
+						"type": "LinkedServiceReference"
+					},
+					"name": "stretchFiles"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "sinkLink",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sinkDb"
+				},
+				{
+					"linkedService": {
+						"referenceName": "sinkLink",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sinkStretch"
+				},
+				{
+					"linkedService": {
+						"referenceName": "sinkLink",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "narrowColumnsDb"
+				},
+				{
+					"name": "narrowColumnsStretch"
+				},
+				{
+					"name": "unpivotStretchColumns"
+				}
+			],
+			"script": "source(output(\n\t\t{Material Cert} as string,\n\t\t{Cert #/SO#/Contract#} as string,\n\t\tCertReceived as date 'dd/MM/yyyy',\n\t\t{PO #} as integer '000',\n\t\tSULPHUR as float '##0.##',\n\t\t{Heat/Melt #-Code#} as string,\n\t\t{Test/IC #} as string,\n\t\t{Head ID/Plate ID} as string,\n\t\t{PN Code} as string,\n\t\tPN as integer '000',\n\t\t{Chart ID} as string,\n\t\t{Actual Thickness} as float '##0.##',\n\t\tMatlReceivedDate as date 'MM/dd/yyyy',\n\t\tInspector as string,\n\t\t{S/N} as string,\n\t\t{NB#} as integer '000',\n\t\tComments as string,\n\t\t{Hd or Plate} as string,\n\t\t{Material/Grade} as string,\n\t\tThk as float '##0.##',\n\t\t{Plate Producer} as string,\n\t\t{Plate Condition from Plate Vendor} as string,\n\t\t{Head Producer} as string,\n\t\t{Head Forming(H/C)} as string,\n\t\t{Heat Treatment} as string,\n\t\t{Comply to UCS-79(D), UG-81/SEC VIII,DIV.1} as boolean,\n\t\t{Hd Ht#=Plt Ht#} as boolean,\n\t\t{Yield Ok} as boolean,\n\t\t{Tensile Ok} as boolean,\n\t\tDateCertOKed as string,\n\t\t{Chemical  Ok} as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'database',\n\tfileName: 'DatabaseData.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> database\nsource(output(\n\t\trec_num as integer,\n\t\t{ } as string,\n\t\tCIT_TIME as string,\n\t\tD_MIN as short,\n\t\tPSIG_1 as float,\n\t\tPSIG_2 as string,\n\t\tS1b as float,\n\t\tS1_A as float,\n\t\tS1_B as float,\n\t\tS1_C as float '##0.##',\n\t\tS1_D as string,\n\t\tS2b as float,\n\t\tS2_A as float,\n\t\tS2_B as float,\n\t\tS2_C as float '##0.##',\n\t\tS2_D as string,\n\t\tS3b as float,\n\t\tS3_A as float,\n\t\tS3_B as float,\n\t\tS3_C as float '##0.##',\n\t\tS3_D as string,\n\t\tS4b as float,\n\t\tS4_A as float,\n\t\tS4_B as float,\n\t\tS4_C as float '##0.##',\n\t\tS4_D as string,\n\t\tS5b as float,\n\t\tS5_A as float,\n\t\tS5_B as float,\n\t\tS5_C as float '##0.##',\n\t\tS5_D as string,\n\t\tS6b as string,\n\t\tS6_A as string,\n\t\tS6_B as string,\n\t\tS6_C as float '##0.##',\n\t\tS6_D as string,\n\t\tS7b as string,\n\t\tS7_A as string,\n\t\tS7_B as string,\n\t\tS7_C as float '##0.##',\n\t\tS7_D as string,\n\t\tS8b as string,\n\t\tS8_A as string,\n\t\tS8_B as string,\n\t\tS8_C as float '##0.##',\n\t\tS8_D as string,\n\t\tS9b as string,\n\t\tS9_A as string,\n\t\tS9_B as string,\n\t\tS9_C as float '##0.##',\n\t\tS9_D as string,\n\t\tS10b as string,\n\t\tS10_A as string,\n\t\tS10_B as string,\n\t\tS10_C as float,\n\t\tS10_D as string,\n\t\tS11b as string,\n\t\tS11_A as string,\n\t\tS11_B as string,\n\t\tS11_C as float '##0.##',\n\t\tS11_D as string,\n\t\tS12b as string,\n\t\tS12_A as string,\n\t\tS12_B as string,\n\t\tS12_C as float '##0.##',\n\t\tS12_D as string,\n\t\tS13b as string,\n\t\tS13_A as string,\n\t\tS13_B as string,\n\t\tS13_C as float '##0.##',\n\t\tS13_D as string,\n\t\tS14b as string,\n\t\tS14_A as string,\n\t\tS14_B as string,\n\t\tS14_C as float '##0.##',\n\t\tS14_D as string,\n\t\tS15b as string,\n\t\tS15_A as string,\n\t\tS15_B as string,\n\t\tS15_C as float '##0.##',\n\t\tS15_D as string,\n\t\tS16b as string,\n\t\tS16_A as string,\n\t\tS16_B as string,\n\t\tS16_C as float '##0.##',\n\t\tS16_D as string,\n\t\tS17b as string,\n\t\tS17_A as string,\n\t\tS17_B as string,\n\t\tS17_C as float '##0.##',\n\t\tS17_D as string,\n\t\tS18b as string,\n\t\tS18_A as string,\n\t\tS18_B as string,\n\t\tS18_C as float '##0.##',\n\t\tS18_D as string,\n\t\tS19b as string,\n\t\tS19_A as string,\n\t\tS19_B as string,\n\t\tS19_C as float '##0.##',\n\t\tS19_D as string,\n\t\tS20b as string,\n\t\tS20_A as string,\n\t\tS20_B as string,\n\t\tS20_C as float '##0.##',\n\t\tS20_D as string,\n\t\tS21b as string,\n\t\tS21_A as string,\n\t\tS21_B as string,\n\t\tS21_C as float '##0.##',\n\t\tS21_D as string,\n\t\tS22b as string,\n\t\tS22_A as string,\n\t\tS22_B as string,\n\t\tS22_C as float '##0.##',\n\t\tS22_D as string,\n\t\tS23b as string,\n\t\tS23_A as string,\n\t\tS23_B as string,\n\t\tS23_C as float '##0.##',\n\t\tS23_D as string,\n\t\tS24b as string,\n\t\tS24_A as string,\n\t\tS24_B as string,\n\t\tS24_C as float '##0.##',\n\t\tS24_D as string,\n\t\tS25b as string,\n\t\tS25_A as string,\n\t\tS25_B as string,\n\t\tS25_C as float '##0.##',\n\t\tS25_D as string,\n\t\tS26b as string,\n\t\tS26_A as string,\n\t\tS26_B as string,\n\t\tS26_C as float '##0.##',\n\t\tS26_D as string,\n\t\tS27b as string,\n\t\tS27_A as string,\n\t\tS27_B as string,\n\t\tS27_C as float '##0.##',\n\t\tS27_D as string,\n\t\tS28b as string,\n\t\tS28_A as string,\n\t\tS28_B as string,\n\t\tS28_C as float '##0.##',\n\t\tS28_D as string,\n\t\tS29b as string,\n\t\tS29_A as string,\n\t\tS29_B as string,\n\t\tS29_C as float '##0.##',\n\t\tS29_D as string,\n\t\tS30b as string,\n\t\tS30_A as string,\n\t\tS30_B as string,\n\t\tS30_C as float '##0.##',\n\t\tS30_D as string,\n\t\tS31b as string,\n\t\tS31_A as string,\n\t\tS31_B as string,\n\t\tS31_C as float '##0.##',\n\t\tS31_D as string,\n\t\tS32b as string,\n\t\tS32_A as string,\n\t\tS32_B as string,\n\t\tS32_C as float '##0.##',\n\t\tS32_D as string,\n\t\tS33b as string,\n\t\tS33_A as string,\n\t\tS33_B as string,\n\t\tS33_C as float '##0.##',\n\t\tS33_D as string,\n\t\tS34b as string,\n\t\tS34_A as string,\n\t\tS34_B as string,\n\t\tS34_C as float '##0.##',\n\t\tS34_D as string,\n\t\tS35b as string,\n\t\tS35_A as string,\n\t\tS35_B as string,\n\t\tS35_C as float '##0.##',\n\t\tS35_D as string,\n\t\tS36b as string,\n\t\tS36_A as string,\n\t\tS36_B as string,\n\t\tS36_C as float '##0.##',\n\t\tS36_D as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\trowUrlColumn: 'fileName',\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'stretch',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> stretchFiles\ndatabase select(mapColumn(\n\t\tLink = {Material Cert},\n\t\t{Cert No} = {Cert #/SO#/Contract#},\n\t\t{Heat#} = {Heat/Melt #-Code#},\n\t\t{NB#},\n\t\t{Plate Producer}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> narrowColumnsDb\nstretchFiles select(mapColumn(\n\t\tfileName,\n\t\trec_num,\n\t\teach(match(startsWith(name,\"S\")&&endsWith(name,\"_C\")),\n\t\t\t\"st\" + substring($$,2,length($$)-3) = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> narrowColumnsStretch\nnarrowColumnsStretch unpivot(output(\n\t\tstretch as string,\n\t\tst1 as float '##0.##'\n\t),\n\tungroupBy(fileName,\n\t\trec_num),\n\tlateral: false,\n\tignoreNullPivots: false) ~> unpivotStretchColumns\nnarrowColumnsDb sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'outputs',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> sinkDb\nunpivotStretchColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'outputs',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 2) ~> sinkStretch\nnarrowColumnsStretch sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delimited',\n\tfileSystem: 'tank-data',\n\tfolderPath: 'outputs',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}

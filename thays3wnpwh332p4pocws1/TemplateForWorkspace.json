@@ -1314,7 +1314,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "--select count (*) from nyc.fare;\n\n--select count(*) from nyc.trip;\n\n--select * from sys.dm_pdw_exec_requests where status = 'Completed' option (label = 'monitor');\n\nselect * from sys.dm_pdw_exec_requests r where r.[label] = 'monitor';",
+					"query": "select count (*) from nyc.fare option (label = 'gandalf');\n\nselect top(13) * from nyc.fare option (label = 'gandalf');\n\nselect vendor_id , payment_type, count(*) as count from nyc.fare group by vendor_id , payment_type option (label = 'gandalf');\n\nselect count(*) from nyc.trip;\n\nselect top(13) * from nyc.trip option (label = 'gandalf');\n\nselect rate_code, passenger_count, count(*) as count from nyc.trip group by rate_code, passenger_count option (label = 'gandalf');\n\nselect * from sys.dm_pdw_exec_requests where status = 'Completed' option (label = 'gandalf');\n\nselect * from sys.dm_pdw_exec_requests r where r.[label] = 'gandalf';",
 					"metadata": {
 						"language": "sql"
 					},

@@ -17,6 +17,9 @@
 		"sinkLink_accountKey": {
 			"value": ""
 		},
+		"datalakehfs_accountKey": {
+			"value": ""
+		},
 		"DatabaseLinkedService_properties_typeProperties_url": {
 			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
 		},
@@ -37,6 +40,9 @@
 		},
 		"sinkLink_properties_typeProperties_url": {
 			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
+		},
+		"datalakehfs_properties_typeProperties_url": {
+			"value": "https://datalakehfs.dfs.core.windows.net"
 		}
 	}
 }

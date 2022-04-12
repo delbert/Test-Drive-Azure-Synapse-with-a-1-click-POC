@@ -14,10 +14,13 @@
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
 			"value": ""
 		},
-		"sinkLink_accountKey": {
+		"datacan_connectionString": {
 			"value": ""
 		},
 		"datalakehfs_accountKey": {
+			"value": ""
+		},
+		"sinkLink_accountKey": {
 			"value": ""
 		},
 		"DatabaseLinkedService_properties_typeProperties_url": {
@@ -35,14 +38,14 @@
 		"TripFaresDataLakeStorageLinkedService_properties_typeProperties_url": {
 			"value": "@{concat('https://',linkedService().datalakeAccountName,'.dfs.core.windows.net')}"
 		},
+		"datalakehfs_properties_typeProperties_url": {
+			"value": "https://datalakehfs.dfs.core.windows.net"
+		},
 		"keyVaultLinkedservice_properties_typeProperties_baseUrl": {
 			"value": "@{concat('https://',linkedService().keyVaultName,'.vault.azure.net/')}"
 		},
 		"sinkLink_properties_typeProperties_url": {
 			"value": "https://thays3wnpwh332p4poc.dfs.core.windows.net"
-		},
-		"datalakehfs_properties_typeProperties_url": {
-			"value": "https://datalakehfs.dfs.core.windows.net"
 		}
 	}
 }

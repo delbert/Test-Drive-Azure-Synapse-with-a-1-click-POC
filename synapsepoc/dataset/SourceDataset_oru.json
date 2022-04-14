@@ -1,0 +1,35 @@
+{
+	"name": "SourceDataset_oru",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "git data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "idx",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "body",
+				"type": "nvarchar"
+			},
+			{
+				"name": "label",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "Githubdata",
+			"table": "UserInput"
+		}
+	}
+}

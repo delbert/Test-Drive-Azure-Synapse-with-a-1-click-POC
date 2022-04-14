@@ -20,6 +20,12 @@
 		"datalakehfs_accountKey": {
 			"value": ""
 		},
+		"git data_connectionString": {
+			"value": ""
+		},
+		"git storage_accountKey": {
+			"value": ""
+		},
 		"sinkLink_accountKey": {
 			"value": ""
 		},
@@ -39,6 +45,9 @@
 			"value": "@{concat('https://',linkedService().datalakeAccountName,'.dfs.core.windows.net')}"
 		},
 		"datalakehfs_properties_typeProperties_url": {
+			"value": "https://datalakehfs.dfs.core.windows.net"
+		},
+		"git storage_properties_typeProperties_url": {
 			"value": "https://datalakehfs.dfs.core.windows.net"
 		},
 		"keyVaultLinkedservice_properties_typeProperties_baseUrl": {
